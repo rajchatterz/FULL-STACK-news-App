@@ -10,23 +10,16 @@ const SignUpScreen = () => {
         <Text style={styles.textView}>Live News</Text>
       </View>
       <View style={styles.middleView}>
+        <TextInput style={styles.textInputView} placeholder='Full Name'/>
         <TextInput style={styles.textInputView} placeholder='Email'/>
         <TextInput style={styles.textInputView} placeholder='Password'/>
         <TouchableOpacity>
           <Text style={styles.buttonView}>Sign Up</Text>
         </TouchableOpacity>
-        
-        <View style={styles.bottomView}>
-          <Text>Dont have an Account?</Text>
-          <TouchableOpacity>
-              <Text style={styles.bottomButton}>Resister Here</Text>
-            </TouchableOpacity>
-        </View>
       </View>
       
-
-      
     </SafeAreaView>
+    
   )
 }
 
@@ -74,7 +67,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     padding: 10,
     borderRadius: 10,
-    fontWeight:'900'
+    fontWeight: '900',
+    marginTop:10
     
   },
   middleView: {
@@ -87,15 +81,4 @@ const styles = StyleSheet.create({
    
     
   },
-  bottomView: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap:4,
-    flexDirection: 'row',
-  },
-  bottomButton: {
-    color: '#783fb8',
-    fontWeight: '800',
-    
-  }
 })

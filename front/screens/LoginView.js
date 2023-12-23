@@ -2,7 +2,7 @@ import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, Vie
 import React from 'react'
 
 
-const LoginView = () => {
+const LoginView = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
@@ -18,7 +18,7 @@ const LoginView = () => {
         
         <View style={styles.bottomView}>
           <Text>Dont have an Account?</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('Register')}>
               <Text style={styles.bottomButton}>Resister Here</Text>
             </TouchableOpacity>
         </View>
@@ -74,7 +74,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     padding: 10,
     borderRadius: 10,
-    fontWeight:'900'
+    fontWeight: '900',
+    marginTop:10
     
   },
   middleView: {
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
   bottomButton: {
     color: '#783fb8',
     fontWeight: '800',
+
     
   }
 })
