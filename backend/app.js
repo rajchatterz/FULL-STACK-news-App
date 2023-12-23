@@ -19,6 +19,10 @@ app.post('/register', async(req, res) => {
         console.log('Error found',error)
     }
 })
+app.get('/register', async(req, res) => {
+    const register = await User.find({})
+    res.status(200).json(register)
+})
 app.listen(port, () => { 
     console.log(`Currently running at a ${port}`)
 })

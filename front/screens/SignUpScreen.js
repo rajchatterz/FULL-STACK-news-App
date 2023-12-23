@@ -1,8 +1,31 @@
-import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-
+import React, { useState } from 'react';
+import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const SignUpScreen = () => {
+  const [name, setName] = useState('');
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const saveDataOnClick = async () => {
+    const url = 'http://192.168.206.43:3000/register';
+    try {
+      let postResponse = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }), // Fixed here: Use correct state values
+      });
+      if (!postResponse.ok) {
+        throw new Error('Something went wrong');
+      }
+      postResponse = await postResponse.json();
+    } catch (error) {
+      console.error('Fetch Error', error.message);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
@@ -10,20 +33,20 @@ const SignUpScreen = () => {
         <Text style={styles.textView}>Live News</Text>
       </View>
       <View style={styles.middleView}>
-        <TextInput style={styles.textInputView} placeholder='Full Name'/>
-        <TextInput style={styles.textInputView} placeholder='Email'/>
-        <TextInput style={styles.textInputView} placeholder='Password'/>
-        <TouchableOpacity>
+        <TextInput onChangeText={(text) => setName(text)} style={styles.textInputView} placeholder='Full Name' />
+        <TextInput onChangeText={(text) => setEmail(text)} style={styles.textInputView} placeholder='Email' />
+        <TextInput onChangeText={(text) => setPassword(text)} style={styles.textInputView} placeholder='Password' secureTextEntry={true} />
+        {/* Added secureTextEntry for password input */}
+        <TouchableOpacity onPress={saveDataOnClick}>
           <Text style={styles.buttonView}>Sign Up</Text>
         </TouchableOpacity>
       </View>
-      
     </SafeAreaView>
-    
-  )
-}
+  );
+};
 
-export default SignUpScreen
+export default SignUpScreen;
+
 
 const styles = StyleSheet.create({
   container: {
