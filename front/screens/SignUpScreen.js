@@ -56,7 +56,6 @@ const SignUpScreen = ({navigation}) => {
       }
 
       postResponse = await postResponse.json();
-      clearInput()
       
       setDataStored(postResponse)
       if(postResponse.status === 'success') {
@@ -67,10 +66,13 @@ const SignUpScreen = ({navigation}) => {
     }
   };
   const closeModal = () => {
+    
     setShowModal(false)
     errorData()
+    clearInput()
     
   }
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -86,9 +88,15 @@ const SignUpScreen = ({navigation}) => {
         <TextInput value={password} onChange={()=>setpasswordError(false)} secureTextEntry={true} onChangeText={(text) => [[setPassword(text)]]} style={styles.textInputView} placeholder='Password' />
         {passwordError ? <Text style={[styles.errorMessage,{left:-60}]}>Please enter a 8 digit password</Text> : null}
         {/* Added secureTextEntry for password input */}
+        <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={()=>navigation.navigate('Login')}>
+          <Text style={styles.buttonView}>Sign In</Text>
+        </TouchableOpacity>
         <TouchableOpacity  onPressOut={()=>setShowModal(true)} onPress={saveDataOnClick}>
           <Text style={styles.buttonView}>Sign Up</Text>
         </TouchableOpacity>
+        </View>
+        
         
         
       </View>
@@ -99,6 +107,7 @@ const SignUpScreen = ({navigation}) => {
             <TouchableOpacity  onPress={()=>closeModal()}>
               <Text style={styles.modalButton}>Close</Text>
             </TouchableOpacity>
+            
           </View>
         </View>
       </Modal>
@@ -145,9 +154,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff',
   },
+  buttonContainer: {
+    flexDirection: 'row', 
+  
+    width: 300,
+  
+    justifyContent: 'center',
+    gap: 40,
+    marginTop:14
+  },
   buttonView: {
     backgroundColor: '#783fb8',
-    width: 280,
+    width: 130,
     textAlign: 'center',
     color: '#fff',
     padding: 10,

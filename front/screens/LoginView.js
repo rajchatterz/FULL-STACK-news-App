@@ -29,7 +29,7 @@ const LoginView = ({ navigation }) => {
       </View>
       <View style={styles.middleView}>
         <TextInput onChangeText={(text) => setEmail(text)} style={styles.textInputView} placeholder='Email' />
-        <TextInput onChangeText={(text) => setPassword(text)} style={styles.textInputView} placeholder='Password' />
+        <TextInput secureTextEntry={true} onChangeText={(text) => setPassword(text)} style={styles.textInputView} placeholder='Password' />
         {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
         <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={()=>fetchData()}>
