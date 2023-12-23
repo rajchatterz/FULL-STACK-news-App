@@ -1,13 +1,45 @@
 import React, { useState } from 'react';
-import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-const SignUpScreen = () => {
+const SignUpScreen = ({navigation}) => {
   const [name, setName] = useState('');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nameError, setnameError] = useState(false)
+  const [emailError, setemailError] = useState(false)
+  const [passwordError, setpasswordError] = useState(false)
+  const [showModal,setShowModal] = useState(false)
 
+  const errorData = () => {
+    setnameError(false)
+    setemailError(false)
+    setpasswordError(false)
+  }
+  const clearInput = () => {
+    setEmail('')
+    setName('')
+    setPassword('')
+
+  }
   const saveDataOnClick = async () => {
+    if(!name) {
+      setnameError(true);
+    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!email || !emailPattern.test(email)) { 
+      setemailError(true);
+    } else {
+      setemailError(false)
+    }
+
+    if (!password || password.length<8) {
+      setpasswordError(true);
+    } else {
+      setpasswordError(false)
+    }
+    
+    
     const url = 'http://192.168.206.43:3000/register';
     try {
       let postResponse = await fetch(url, {
@@ -19,8 +51,11 @@ const SignUpScreen = () => {
       });
       if (!postResponse.ok) {
         throw new Error('Something went wrong');
+
       }
+
       postResponse = await postResponse.json();
+      clearInput()
     } catch (error) {
       console.error('Fetch Error', error.message);
     }
@@ -33,14 +68,27 @@ const SignUpScreen = () => {
         <Text style={styles.textView}>Live News</Text>
       </View>
       <View style={styles.middleView}>
-        <TextInput onChangeText={(text) => setName(text)} style={styles.textInputView} placeholder='Full Name' />
-        <TextInput onChangeText={(text) => setEmail(text)} style={styles.textInputView} placeholder='Email' />
-        <TextInput onChangeText={(text) => setPassword(text)} style={styles.textInputView} placeholder='Password' secureTextEntry={true} />
+        <TextInput value={name}  onChangeText={(text) =>[setName(text)]} style={styles.textInputView} placeholder='Full Name' />
+        {nameError ? <Text style={styles.errorMessage}>Name is required</Text> : null}
+        <TextInput value={email} onChange={()=>setemailError(false)} onChangeText={(text) => [setEmail(text)]} style={styles.textInputView} placeholder='Email' />
+        {emailError ? <Text style={styles.errorMessage}>Please Enter a Valid email</Text> : null}
+        <TextInput value={password} onChange={()=>setpasswordError(false)} secureTextEntry={true} onChangeText={(text) => [[setPassword(text)]]} style={styles.textInputView} placeholder='Password' />
+        {passwordError ? <Text style={styles.errorMessage}>Please enter a 8 digit password</Text> : null}
         {/* Added secureTextEntry for password input */}
-        <TouchableOpacity onPress={saveDataOnClick}>
+        <TouchableOpacity  onPressOut={()=>setShowModal(true)} onPress={saveDataOnClick}>
           <Text style={styles.buttonView}>Sign Up</Text>
         </TouchableOpacity>
       </View>
+      <Modal transparent={true} animationType='fade' visible={showModal} onRequestClose={()=>setShowModal(false)} >
+        <View style={styles.Container}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modaltext}>Data Stored</Text>
+            <TouchableOpacity onPressOut={errorData} onPressIn={()=>navigation.navigate("Login")}  onPress={()=>setShowModal(false)}>
+              <Text style={styles.modalButton}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -57,6 +105,7 @@ const styles = StyleSheet.create({
     
     
   },
+  
   imageView: {
     width: 190,
     height: 170,
@@ -96,12 +145,45 @@ const styles = StyleSheet.create({
   },
   middleView: {
     
-    alignItems: 'center',
     height: 300,
    
     justifyContent: 'flex-start',
-    gap:20
+    gap:10
    
     
   },
+  errorMessage: {
+    color: 'red',
+    fontWeight: '700',
+    top: -6,
+    left:8
+    
+  },
+  Container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    
+  },
+  modalContainer: {
+    backgroundColor: '#ead9f8',
+    height: 140,
+    width: 180,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    borderRadius: 13,
+    
+  },
+  modalButton: {
+    backgroundColor: '#783fb8',
+    color: '#fff',
+    fontWeight: '800',
+    paddingHorizontal: 15,
+    paddingVertical: 7,
+    borderRadius: 10,
+  },
+  modaltext: {
+    fontSize: 18,
+    fontWeight:'700',
+  }
 })

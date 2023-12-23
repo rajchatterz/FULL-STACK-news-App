@@ -23,6 +23,19 @@ app.get('/register', async(req, res) => {
     const register = await User.find({})
     res.status(200).json(register)
 })
+app.get('/register/:email', async(req, res) => {
+    try {
+        const email = req.params.email
+        const register = await User.findOne({ email })
+        if (!register) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+        res.status(200).json(register)
+    } catch (error) {
+        console.error('Error found', error)
+        res.status(500).json({ message: 'Server error' })
+    }
+})
 app.listen(port, () => { 
     console.log(`Currently running at a ${port}`)
 })

@@ -1,8 +1,16 @@
 import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 
+const LoginView = ({ navigation }) => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-const LoginView = ({navigation}) => {
+  const fetchData = async() => {
+    let url = `http://192.168.206.43:3000/register/${email}`
+    const response = await fetch(url)
+    const result = await response.json()
+    console.log(result)
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
@@ -10,10 +18,10 @@ const LoginView = ({navigation}) => {
         <Text style={styles.textView}>Live News</Text>
       </View>
       <View style={styles.middleView}>
-        <TextInput style={styles.textInputView} placeholder='Email'/>
-        <TextInput style={styles.textInputView} placeholder='Password'/>
-        <TouchableOpacity>
-          <Text style={styles.buttonView}>Sign Up</Text>
+        <TextInput onChangeText={(text)=>setEmail(text)} style={styles.textInputView} placeholder='Email'/>
+        <TextInput onChangeText={(text)=>setPassword(text)} style={styles.textInputView} placeholder='Password'/>
+        <TouchableOpacity onPress={()=>fetchData}>
+          <Text style={styles.buttonView}>Sign In</Text>
         </TouchableOpacity>
         
         <View style={styles.bottomView}>
