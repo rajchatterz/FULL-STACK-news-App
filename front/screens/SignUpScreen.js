@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Image, Modal, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const SignUpScreen = ({navigation}) => {
@@ -9,8 +9,9 @@ const SignUpScreen = ({navigation}) => {
   const [nameError, setnameError] = useState(false)
   const [emailError, setemailError] = useState(false)
   const [passwordError, setpasswordError] = useState(false)
-  const [showModal,setShowModal] = useState(false)
-
+  const [showModal, setShowModal] = useState(false)
+  const [dataStored,setDataStored] =useState(false)
+  
   const errorData = () => {
     setnameError(false)
     setemailError(false)
@@ -40,7 +41,7 @@ const SignUpScreen = ({navigation}) => {
     }
     
     
-    const url = 'http://192.168.206.43:3000/register';
+    const url = 'http://192.168.129.43:3000/register';
     try {
       let postResponse = await fetch(url, {
         method: 'POST',
@@ -56,10 +57,20 @@ const SignUpScreen = ({navigation}) => {
 
       postResponse = await postResponse.json();
       clearInput()
+      
+      setDataStored(postResponse)
+      if(postResponse.status === 'success') {
+        navigation.navigate('Login')
+      }
     } catch (error) {
       console.error('Fetch Error', error.message);
     }
   };
+  const closeModal = () => {
+    setShowModal(false)
+    errorData()
+    
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,21 +80,23 @@ const SignUpScreen = ({navigation}) => {
       </View>
       <View style={styles.middleView}>
         <TextInput value={name}  onChangeText={(text) =>[setName(text)]} style={styles.textInputView} placeholder='Full Name' />
-        {nameError ? <Text style={styles.errorMessage}>Name is required</Text> : null}
+        {nameError ? <Text style={[styles.errorMessage,{left:-102}]}>Name is required</Text> : null}
         <TextInput value={email} onChange={()=>setemailError(false)} onChangeText={(text) => [setEmail(text)]} style={styles.textInputView} placeholder='Email' />
-        {emailError ? <Text style={styles.errorMessage}>Please Enter a Valid email</Text> : null}
+        {emailError ? <Text style={[styles.errorMessage,{left:-77}]}>Please Enter a Valid email</Text> : null}
         <TextInput value={password} onChange={()=>setpasswordError(false)} secureTextEntry={true} onChangeText={(text) => [[setPassword(text)]]} style={styles.textInputView} placeholder='Password' />
-        {passwordError ? <Text style={styles.errorMessage}>Please enter a 8 digit password</Text> : null}
+        {passwordError ? <Text style={[styles.errorMessage,{left:-60}]}>Please enter a 8 digit password</Text> : null}
         {/* Added secureTextEntry for password input */}
         <TouchableOpacity  onPressOut={()=>setShowModal(true)} onPress={saveDataOnClick}>
           <Text style={styles.buttonView}>Sign Up</Text>
         </TouchableOpacity>
+        
+        
       </View>
       <Modal transparent={true} animationType='fade' visible={showModal} onRequestClose={()=>setShowModal(false)} >
         <View style={styles.Container}>
           <View style={styles.modalContainer}>
-            <Text style={styles.modaltext}>Data Stored</Text>
-            <TouchableOpacity onPressOut={errorData} onPressIn={()=>navigation.navigate("Login")}  onPress={()=>setShowModal(false)}>
+            {dataStored?<Text style={styles.modaltext}>Sent Data</Text>:<Text style={styles.modaltext}>No Data</Text>}
+            <TouchableOpacity  onPress={()=>closeModal()}>
               <Text style={styles.modalButton}>Close</Text>
             </TouchableOpacity>
           </View>
@@ -144,7 +157,7 @@ const styles = StyleSheet.create({
     
   },
   middleView: {
-    
+    alignItems:'center',
     height: 300,
    
     justifyContent: 'flex-start',
@@ -155,8 +168,9 @@ const styles = StyleSheet.create({
   errorMessage: {
     color: 'red',
     fontWeight: '700',
-    top: -6,
-    left:8
+    top: -10,
+    fontSize:13
+    
     
   },
   Container: {

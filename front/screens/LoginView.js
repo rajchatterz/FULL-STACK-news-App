@@ -4,12 +4,22 @@ import React, { useState } from 'react'
 const LoginView = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
+  const [errorMessage,setErrorMessage] = useState('')
+ 
   const fetchData = async() => {
-    let url = `http://192.168.206.43:3000/register/${email}`
-    const response = await fetch(url)
-    const result = await response.json()
-    console.log(result)
+    try {
+      let url = `http://192.168.129.43:3000/register/${email}`
+      let response = await fetch(url)
+      let result = await response.json()
+      if(result.password === password){
+        navigation.navigate('Home')
+      } else {
+        setErrorMessage('Invalid Credentials')
+      }
+      
+    } catch (error) {
+      console.error('Fetch Error',error);
+    }
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -18,17 +28,21 @@ const LoginView = ({ navigation }) => {
         <Text style={styles.textView}>Live News</Text>
       </View>
       <View style={styles.middleView}>
-        <TextInput onChangeText={(text)=>setEmail(text)} style={styles.textInputView} placeholder='Email'/>
-        <TextInput onChangeText={(text)=>setPassword(text)} style={styles.textInputView} placeholder='Password'/>
-        <TouchableOpacity onPress={()=>fetchData}>
+        <TextInput onChangeText={(text) => setEmail(text)} style={styles.textInputView} placeholder='Email' />
+        <TextInput onChangeText={(text) => setPassword(text)} style={styles.textInputView} placeholder='Password' />
+        {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
+        <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={()=>fetchData()}>
           <Text style={styles.buttonView}>Sign In</Text>
         </TouchableOpacity>
+        
         
         <View style={styles.bottomView}>
           <Text>Dont have an Account?</Text>
           <TouchableOpacity onPress={()=>navigation.navigate('Register')}>
               <Text style={styles.bottomButton}>Resister Here</Text>
             </TouchableOpacity>
+        </View>
         </View>
       </View>
       
@@ -88,11 +102,11 @@ const styles = StyleSheet.create({
   },
   middleView: {
     
-    alignItems: 'center',
+
     height: 300,
    
     justifyContent: 'flex-start',
-    gap:20
+    gap:15
    
     
   },
@@ -107,5 +121,18 @@ const styles = StyleSheet.create({
     fontWeight: '800',
 
     
+  },
+  buttonContainer: {
+    alignItems: 'center',
+
+    height: 100,
+    justifyContent: 'space-between',
+  },
+  errorMessage: {
+    color: 'red',
+    fontWeight: '700',
+    top: -11,
+    left:3
+
   }
 })
