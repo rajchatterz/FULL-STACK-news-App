@@ -16,12 +16,12 @@ const App = () => {
           name="Login"
           component={LoginView}
         />
-        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen
           name="Register"
           component={SignUpScreen}
           options={{headerShown: false}}
         />
+        <Stack.Screen name="Home" component={HomeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
