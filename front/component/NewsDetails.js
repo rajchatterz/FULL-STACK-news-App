@@ -1,12 +1,14 @@
 import { FlatList,Linking, Image,TouchableOpacity, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import SearchBox from './SearchBox'
 
 
 
 const NewsDetails = ({navigation}) => {
     
     const [data, setData] = useState([])
+    const [searchValue,setSearchValue] = useState('')
     useEffect(() => {
         fetchData()
     })
@@ -16,8 +18,8 @@ const NewsDetails = ({navigation}) => {
     let getYear = date.getFullYear()
     let newDate = `${getYear}-${getMonth}-${getDay}`
     const fetchData = async() => {
-        const API_KEY = '1e8c18cafb044a1ca341f881dfacd121'
-        const url = `https://newsapi.org/v2/everything?q=tesla&from=${newDate}&sortBy=publishedAt&apiKey=${API_KEY}`
+        const API_KEY = 'c4c910cec314415a89aaad781b3ad3fe'
+        const url = `https://newsapi.org/v2/everything?q=${searchValue}&from=${newDate}&sortBy=publishedAt&apiKey=${API_KEY}`
         try {
             const response = await axios.get(url)
             setData(response.data.articles)
@@ -45,11 +47,14 @@ const NewsDetails = ({navigation}) => {
         )
     }
   return (
-
+      <>
+          <SearchBox setSearchValue={ setSearchValue} />
           <FlatList data={data}
               renderItem={renderItem}
+  
               keyExtractor={(item,index)=>index.toString()}
           />
+      </>
 
   )
 }

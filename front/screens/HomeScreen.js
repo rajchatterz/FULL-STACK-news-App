@@ -35,8 +35,8 @@ const HomeScreen = ({ route }) => {
             {/* <Text  style={[textStyle,styles.userName]}>{saveName.toUpperCase()}</Text> */}
           </View>
       </View>
-      <SearchBox />
-      <NewsDetails />
+
+      <NewsDetails  />
     </SafeAreaView>
   );
 }

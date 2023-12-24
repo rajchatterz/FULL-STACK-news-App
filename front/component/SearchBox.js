@@ -1,16 +1,18 @@
 import { StyleSheet, Text, View,TextInput } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 
 
-const SearchBox = () => {
+const SearchBox = ({setSearchValue}) => {
+
   return (
     <View style={styles.container}>
       <TextInput style={styles.textView} 
       keyboardType='default'
       autoCapitalize='none'
       autoCorrect={false}
-   
-      placeholder='Search'/>
+        placeholder='Search'
+      onChangeText={(text)=>setSearchValue(text)}
+      />
     </View>
   )
 }
