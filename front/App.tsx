@@ -6,13 +6,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignUpScreen from './screens/SignUpScreen';
 import AnotherScreen from './screens/AnotherScreen';
+import WebView from './screens/WebView';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           options={{headerShown: false}}
           name="Login"

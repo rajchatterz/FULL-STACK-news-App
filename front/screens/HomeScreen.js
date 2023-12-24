@@ -2,6 +2,7 @@ import { Image, SafeAreaView, StyleSheet,Switch, Text, View } from 'react-native
 import React, { useState } from 'react'
 import SearchBox from '../component/SearchBox'
 import { TouchableOpacity } from 'react-native'
+import NewsDetails from '../component/NewsDetails'
 
 const HomeScreen = ({ route }) => {
   const [isNightMode, setIsNightMode] = useState(false);
@@ -10,7 +11,7 @@ const HomeScreen = ({ route }) => {
     setIsNightMode(!isNightMode);
   };
 
-  const { saveName } = route.params;
+  // const { saveName } = route.params;
   const containerStyle = isNightMode ? styles.nightStyle : styles.dayStyle;
   const textStyle = isNightMode ? styles.nightText : styles.dayText;
 
@@ -31,10 +32,11 @@ const HomeScreen = ({ route }) => {
           </View>
           <View style={{justifyContent:'center',alignItems:'center'}}>
             <Image style={styles.userIcon} source={require('../assets/icon/user.png')} />
-            <Text  style={[textStyle,styles.userName]}>{saveName.toUpperCase()}</Text>
+            {/* <Text  style={[textStyle,styles.userName]}>{saveName.toUpperCase()}</Text> */}
           </View>
       </View>
       <SearchBox />
+      <NewsDetails />
     </SafeAreaView>
   );
 }

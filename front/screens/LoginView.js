@@ -14,7 +14,7 @@ const LoginView = ({ navigation }) => {
       let result = await response.json()
       if(result.password === password){
         setSaveName(result.name)
-        await Alert.alert('Login Successful')
+         Alert.alert('Login Successful')
         await navigation.navigate('Home', { saveName })
         
       } else {
