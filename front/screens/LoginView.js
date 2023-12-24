@@ -9,7 +9,7 @@ const LoginView = ({ navigation }) => {
  
   const fetchData = async() => {
     try {
-      let url = `http://192.168.91.43:3000/register/${email}`
+      let url = `http://192.168.106.43:3000/register/${email}`
       let response = await fetch(url)
       let result = await response.json()
       if(result.password === password){

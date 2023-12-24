@@ -36,7 +36,7 @@ const HomeScreen = ({ route }) => {
           </View>
       </View>
 
-      <NewsDetails  />
+      <NewsDetails isNightMode={isNightMode} />
     </SafeAreaView>
   );
 }

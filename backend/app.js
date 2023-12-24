@@ -40,4 +40,4 @@ app.listen(port, () => {
     console.log(`Currently running at a ${port}`)
 })
 mongoose.set('strictQuery', true);
-mongoose.connect('mongodb+srv://rajchatterz:mGeNvBe9BxCLGQW1@edtech.df872ze.mongodb.net/?retryWrites=true&w=majority').then((con)=>console.log(`connected with the server ${con.Connection.name}`)).catch((err)=>console.log(err))
+mongoose.connect('mongodb+srv://rajchatterz:{Add password}@edtech.df872ze.mongodb.net/?retryWrites=true&w=majority').then((con)=>console.log(`connected with the server ${con.Connection.name}`)).catch((err)=>console.log(err))

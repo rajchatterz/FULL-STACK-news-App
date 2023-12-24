@@ -5,7 +5,7 @@ import SearchBox from './SearchBox'
 
 
 
-const NewsDetails = ({navigation}) => {
+const NewsDetails = ({isNightMode}) => {
     
     const [data, setData] = useState([])
     const [searchValue,setSearchValue] = useState('')
@@ -18,7 +18,7 @@ const NewsDetails = ({navigation}) => {
     let getYear = date.getFullYear()
     let newDate = `${getYear}-${getMonth}-${getDay}`
     const fetchData = async() => {
-        const API_KEY = 'c4568c2fcfcf4197886bafb6735e24db'
+        const API_KEY = 'e6624f0c3cf54c51a4285cd8efec8524'
         let url = `https://newsapi.org/v2/everything?q=${searchValue}&from=${newDate}&sortBy=publishedAt&apiKey=${API_KEY}`
         let url1 = `https://newsapi.org/v2/everything?q=india&from=${newDate}&sortBy=publishedAt&apiKey=${API_KEY}`
         {
@@ -40,10 +40,19 @@ const NewsDetails = ({navigation}) => {
             <TouchableOpacity onPress={() => openUrl(item.url)} style={styles.container}>
                 <Image source={{ uri: item.urlToImage }} style={ styles.imageView} />
                 <View>
-                    <Text style={styles.titleView}>{item.title}</Text>
+                    {isNightMode ?
+                        <Text style={styles.nightText}>{item.title}</Text> :
+                        <Text style={styles.titleView}>{item.title}</Text>
+                        
+                }
                     <View style={styles.bottomView}>
-                        <Text style={{color:'black',opacity:0.9}}>{item.author}</Text>
-                        <Text style={{color:'black',opacity:0.9}}>{ item.publishedAt}</Text>
+                        {isNightMode ?
+                            <Text style={{ color: 'white', opacity: 0.9 }}>{item.author}</Text> :
+                            <Text style={{color:'black',opacity:0.9}}>{item.author}</Text>}
+                        {isNightMode ?
+                            <Text style={{ color: 'white', opacity: 0.9 }}>{item.publishedAt}</Text> :
+                            <Text style={{ color: 'black', opacity: 0.9 }}>{item.publishedAt}</Text>}
+                       
                     </View>
                 </View>
             </TouchableOpacity>
@@ -54,8 +63,12 @@ const NewsDetails = ({navigation}) => {
           <SearchBox setSearchValue={ setSearchValue} />
           <FlatList data={data}
               renderItem={renderItem}
-  
-              keyExtractor={(item,index)=>index.toString()}
+
+              keyExtractor={(item, index) => index.toString()}
+              style={{
+                  borderBottomColor: isNightMode ? 'white' : 'black',
+                  borderBottomWidth:0.2
+              }}
           />
       </>
 
@@ -66,10 +79,10 @@ export default NewsDetails
 
 const styles = StyleSheet.create({
     container: {
-        height: 300,
+        height: 320,
         justifyContent: 'center',
         alignItems: 'center',
-        borderBottomColor: 'black',
+        
         borderBottomWidth: 0.2,
         padding:20
     },
@@ -91,6 +104,12 @@ const styles = StyleSheet.create({
         
         marginTop:5
     },
+    nightText: {
+        color: 'white',
+        fontWeight: '700',
+        fontSize: 20,
+        
+    }
 
 
 })
