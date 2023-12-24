@@ -41,7 +41,7 @@ const SignUpScreen = ({navigation}) => {
     }
     
     
-    const url = 'http://192.168.129.43:3000/register';
+    const url = 'http://192.168.91.43:3000/register';
     try {
       let postResponse = await fetch(url, {
         method: 'POST',

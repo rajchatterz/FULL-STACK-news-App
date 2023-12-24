@@ -1,18 +1,22 @@
-import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 
 const LoginView = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errorMessage,setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [saveName,setSaveName] = useState('')
  
   const fetchData = async() => {
     try {
-      let url = `http://192.168.129.43:3000/register/${email}`
+      let url = `http://192.168.91.43:3000/register/${email}`
       let response = await fetch(url)
       let result = await response.json()
       if(result.password === password){
-        navigation.navigate('Home')
+        setSaveName(result.name)
+        await Alert.alert('Login Successful')
+        await navigation.navigate('Home', { saveName })
+        
       } else {
         setErrorMessage('Invalid Credentials')
       }
