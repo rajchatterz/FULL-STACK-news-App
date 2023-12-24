@@ -18,15 +18,18 @@ const NewsDetails = ({navigation}) => {
     let getYear = date.getFullYear()
     let newDate = `${getYear}-${getMonth}-${getDay}`
     const fetchData = async() => {
-        const API_KEY = 'c4c910cec314415a89aaad781b3ad3fe'
-        const url = `https://newsapi.org/v2/everything?q=${searchValue}&from=${newDate}&sortBy=publishedAt&apiKey=${API_KEY}`
-        try {
-            const response = await axios.get(url)
-            setData(response.data.articles)
-            setIsImage(response.data.articles.urlToImage)
-        } catch (error) {
-            console.error('Error found while fteching the data',error);
+        const API_KEY = 'c4568c2fcfcf4197886bafb6735e24db'
+        let url = `https://newsapi.org/v2/everything?q=${searchValue}&from=${newDate}&sortBy=publishedAt&apiKey=${API_KEY}`
+        let url1 = `https://newsapi.org/v2/everything?q=india&from=${newDate}&sortBy=publishedAt&apiKey=${API_KEY}`
+        {
+            searchValue ?
+                await axios.get(url).then((res) => setData(res.data.articles)) :
+                await axios.get(url1).then((res) => setData(res.data.articles))
+            
+            
         }
+        
+
     }
     const openUrl = (item) => {
         Linking.openURL(item).catch((err)=>console.error("An error occured",err))
